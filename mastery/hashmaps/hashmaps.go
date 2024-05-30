@@ -105,10 +105,10 @@ func AddAverageLifeSpanOfAnimal(animal Animal, lifeSpan string) (map[Animal]stri
 // Überprüfe, ob ein Benutzer mit dem Namen "Konzo" in der Map vorhanden ist.
 
 var AdressBook = map[string]string{
-	"Carlos":  "carlos.maiza@hotmail.com",
-	"Carmelo": "carmelo.maiza@hotmail.com",
-	"Nzolani": "nzolani.maiza@hotmail.com",
-	"Konzo":   "konzo.maiza@hotmail.com",
+	"Carlos":  "carlos.mwuana@hotmail.de",
+	"Carmelo": "carmelo.mwinda@hotmail.de",
+	"Nzolani": "nzolani.nzinga@hotmail.de",
+	"Konzo":   "konzo.nzinga@hotmail.de",
 }
 
 func Contains(name string) bool {
@@ -186,11 +186,11 @@ var booksAuthors = map[Book]string{
 	"Haben oder Sein":              "Erich Fromm",
 }
 
-func PrintAuthorsName(bookName string) (string, error) {
-	if author, exists := booksAuthors[Book(bookName)]; exists {
+func PrintAuthorsName(book Book) (string, error) {
+	if author, exists := booksAuthors[book]; exists {
 		return author, nil
 	}
-	return "", fmt.Errorf("author for '%s' not found", bookName)
+	return "", fmt.Errorf("author for '%s' not found", book)
 }
 
 /*
@@ -240,8 +240,8 @@ var restaurantMenu = map[RestaurantName]map[string]float32{
 	//"Unbekanntes Restaurant": nil,
 }
 
-func PrintRestaurantMenu(restaurantName string) (map[string]float32, error) {
-	restaurant, exists := restaurantMenu[RestaurantName(restaurantName)]
+func PrintRestaurantMenu(restaurantName RestaurantName) (map[string]float32, error) {
+	restaurant, exists := restaurantMenu[restaurantName]
 	if !exists {
 		return nil, fmt.Errorf("restaurant '%s' not found", restaurantName)
 	}
@@ -265,7 +265,10 @@ type User struct {
 }
 
 var users = map[string]User{
-	"Nzolani": {Countries: []VisitedCountry{{Name: "Germany", Capital: "Berlin"}}},
+	"Nzolani": {Countries: []VisitedCountry{
+		{Name: "Germany", Capital: "Berlin"},
+		{Name: "USA", Capital: "Washington DC"},
+	}},
 	"Konzo":   {Countries: []VisitedCountry{{Name: "Congo", Capital: "Kinshasa"}}},
 	"Kalonji": {Countries: []VisitedCountry{{Name: "Angola", Capital: "Luanda"}}},
 }
@@ -276,10 +279,29 @@ func VisitedCountries(username string) ([]VisitedCountry, error) {
 		return nil, fmt.Errorf("username '%s' does not exist in map", username)
 	}
 
-	/* 	var countryNames []string
-	   	for _, country := range user.Countries {
-	   		countryNames = append(countryNames, country.Name)
-	   	} */
-
 	return user.Countries, nil
+}
+
+type (
+	AirportName       string
+	FlightDestination string
+	FlightsHour       string
+)
+
+var airportInformation = map[AirportName]map[FlightDestination]FlightsHour{
+	"Frankfurter Flughafen": {
+		"Berliner Flughafen": "12:30",
+	},
+	"Muenchener Flughafen": {
+		"Duesseldorfer Flughafen": "14:30",
+	},
+}
+
+func AirportDetails(name AirportName) (map[FlightDestination]FlightsHour, error) {
+	flightDetails, exists := airportInformation[name]
+	if !exists {
+		return nil, fmt.Errorf("Aiport '%s' does not exist", name)
+	}
+
+	return flightDetails, nil
 }

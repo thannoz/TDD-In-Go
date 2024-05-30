@@ -290,7 +290,7 @@ func TestPrintAuthorsNames(t *testing.T) {
 	t.Parallel()
 
 	testCases := []struct {
-		bookName    string
+		bookName    hp.Book
 		expected    string
 		expectedErr bool
 	}{
@@ -328,7 +328,7 @@ func TestPrintStudentCourses(t *testing.T) {
 		{"Mathematik", []string{"Carlos", "Konzo", "Mwinda"}, false},
 		{"Physik", []string{"Kalonji", "Selamawit"}, false},
 		{"Informatik", []string{"Nzolani", "Carmelo", "Kyrie"}, false},
-		{"Kunst", nil, true}, // should fail because no such student in map
+		{"Kunst", nil, true}, // should fail because no such subject in map
 	}
 
 	for _, tc := range testCases {
@@ -360,7 +360,7 @@ func TestPrintRestaurantMenu(t *testing.T) {
 	t.Parallel()
 
 	testCases := []struct {
-		restaurantName string
+		restaurantName hp.RestaurantName
 		menu           map[string]float32
 		expectedErr    bool
 	}{
@@ -407,7 +407,7 @@ func TestPrintRestaurantMenu(t *testing.T) {
 	}
 
 	for _, tc := range testCases {
-		t.Run(tc.restaurantName, func(t *testing.T) {
+		t.Run(string(tc.restaurantName), func(t *testing.T) {
 			t.Parallel()
 
 			restaurantMenu, err := hp.PrintRestaurantMenu(tc.restaurantName)
@@ -444,8 +444,10 @@ func TestVisitedCountries(t *testing.T) {
 		expectedErr bool
 	}{
 		{
-			username:    "Nzolani",
-			user:        []hp.VisitedCountry{{Name: "Germany", Capital: "Berlin"}},
+			username: "Nzolani",
+			user: []hp.VisitedCountry{
+				{Name: "Germany", Capital: "Berlin"},
+				{Name: "USA", Capital: "Washington DC"}},
 			expectedErr: false,
 		},
 		{
@@ -470,6 +472,60 @@ func TestVisitedCountries(t *testing.T) {
 				}
 				if !reflect.DeepEqual(tc.user, countries) {
 					t.Fatalf("for username '%s', expected '%v', but got '%v'", tc.username, tc.user, countries)
+				}
+			}
+		})
+	}
+}
+
+/* 3. Erstelle eine Map, die den Namen eines Flughafens als Schlüssel und eine Map mit
+   Flügen zu anderen Flughäfen und den entsprechenden Flugzeiten als Wert enthält.
+   Füge Flüge und Flugzeiten hinzu und gib die Flugdetails für einen bestimmten Flughafen aus.
+*/
+
+func TestAirportDetails(t *testing.T) {
+	t.Parallel()
+
+	testCases := []struct {
+		airportName string
+		details     map[string]string
+		expectedErr bool
+	}{
+		{
+			airportName: "Frankfurter Flughafen",
+			details: map[string]string{
+				"Berliner Flughafen": "12:30",
+			},
+			expectedErr: false,
+		},
+		{
+			airportName: "Muenchener Flughafen",
+			details: map[string]string{
+				"Duesseldorfer Flughafen": "14:30",
+			},
+			expectedErr: false,
+		},
+		{
+			airportName: "Flughafen Unbekannt",
+			details:     nil,
+			expectedErr: true,
+		},
+	}
+
+	for _, tc := range testCases {
+		t.Run(tc.airportName, func(t *testing.T) {
+			t.Parallel()
+			details, err := hp.AirportDetails(hp.AirportName((tc.airportName)))
+			if tc.expectedErr {
+				if err == nil {
+					t.Errorf("expected error for flight '%s' but got none", tc.airportName)
+				}
+			} else {
+				if err != nil {
+					t.Errorf("did not expect an error for flight '%s', but got '%v'", tc.airportName, err)
+				}
+				if !reflect.DeepEqual(tc.details, details) {
+					t.Fatalf("for flight '%s', expected '%v' but got '%v'", tc.airportName, tc.details, details)
 				}
 			}
 		})
