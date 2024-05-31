@@ -314,20 +314,26 @@ type (
 
 var companyDetails = map[CompanyName]map[EmployeeName]Paycheck{
 	"Deutsche Börse Group": {
-		"Carlos Maiza": 5000.45,
+		"Jon Doe": 5000.45,
 	},
 	"Deutsche Bank AG": {
-		"Carlos Maiza": 6000.50,
+		"Jane Doe": 6000.50,
 	},
 	"Porsche AG": {
-		"Carlos Maiza": 4500.55,
+		"John Smith": 4500.55,
 	},
 }
 
-func GetPaycheckDetails(cp CompanyName) (map[CompanyName]map[EmployeeName]Paycheck, error) {
-	_, exists := companyDetails[cp]
+func GetPaycheckDetails(cp CompanyName) ([]float64, error) {
+	salaryDetails, exists := companyDetails[cp]
 	if !exists {
-		return nil, fmt.Errorf("paycheck details for '%s' not found", cp)
+		return nil, fmt.Errorf("salary details for '%s' not found", cp)
 	}
-	return nil, nil
+
+	var paycheckAmounts []float64
+	for _, salary := range salaryDetails {
+		paycheckAmounts = append(paycheckAmounts, float64(salary))
+	}
+
+	return paycheckAmounts, nil
 }

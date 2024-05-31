@@ -496,14 +496,21 @@ func TestGetPaycheckDetails(t *testing.T) {
 		{
 			CompanyName: "Deutsche Börse Group",
 			PaycheckDetails: map[hp.CompanyName]hp.Paycheck{
-				"Deutsche Börse Group": 5000.45,
+				"John Doe": 5000.45,
 			},
 			expectedErr: false,
 		},
 		{
 			CompanyName: "Deutsche Bank AG",
 			PaycheckDetails: map[hp.CompanyName]hp.Paycheck{
-				"Deutsche Bank AG": 6000.50,
+				"Jane Doe": 6000.50,
+			},
+			expectedErr: false,
+		},
+		{
+			CompanyName: "Porsche AG",
+			PaycheckDetails: map[hp.CompanyName]hp.Paycheck{
+				"John Smith": 4500.55,
 			},
 			expectedErr: false,
 		},
@@ -517,7 +524,6 @@ func TestGetPaycheckDetails(t *testing.T) {
 	}
 
 	for _, tc := range testCases {
-		//fmt.Println("paycheck: ", tc.PaycheckDetails)
 		t.Run(tc.CompanyName, func(t *testing.T) {
 			_, err := hp.GetPaycheckDetails(hp.CompanyName(tc.CompanyName))
 			if tc.expectedErr {
