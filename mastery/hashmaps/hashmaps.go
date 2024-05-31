@@ -305,3 +305,29 @@ func AirportDetails(name AirportName) (map[FlightDestination]FlightsHour, error)
 
 	return flightDetails, nil
 }
+
+type (
+	CompanyName  string
+	EmployeeName string
+	Paycheck     float64
+)
+
+var companyDetails = map[CompanyName]map[EmployeeName]Paycheck{
+	"Deutsche Börse Group": {
+		"Carlos Maiza": 5000.45,
+	},
+	"Deutsche Bank AG": {
+		"Carlos Maiza": 6000.50,
+	},
+	"Porsche AG": {
+		"Carlos Maiza": 4500.55,
+	},
+}
+
+func GetPaycheckDetails(cp CompanyName) (map[CompanyName]map[EmployeeName]Paycheck, error) {
+	_, exists := companyDetails[cp]
+	if !exists {
+		return nil, fmt.Errorf("paycheck details for '%s' not found", cp)
+	}
+	return nil, nil
+}

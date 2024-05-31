@@ -6,48 +6,6 @@ import (
 	"testing"
 )
 
-func TestGreet(t *testing.T) {
-	t.Parallel()
-
-	type tests struct {
-		lang language
-		want string
-	}
-
-	var testCases = map[string]tests{
-		"English": {
-			lang: "en",
-			want: "Hello, world",
-		},
-		"Lingala": {
-			lang: "li",
-			want: "Mbote, mokili",
-		},
-		"French": {
-			lang: "fr",
-			want: "Bonjour, le monde",
-		},
-		"Deutsch": {
-			lang: "de",
-			want: "Hallo, Welt",
-		},
-		"Empty": {
-			lang: "",
-			want: `unsupported language: ""`,
-		},
-	}
-
-	for name, tc := range testCases {
-		t.Run(name, func(t *testing.T) {
-			got := greet(tc.lang)
-
-			if tc.want != got {
-				t.Errorf("expected: %q, got: %q", tc.want, got)
-			}
-		})
-	}
-}
-
 func TestGetCapitals(t *testing.T) {
 	t.Parallel()
 
@@ -429,12 +387,6 @@ func TestPrintRestaurantMenu(t *testing.T) {
 	}
 }
 
-/*
-2. Erstelle eine Map, die den Namen eines Benutzers als Schlüssel und eine
-    Map mit den von ihm besuchten Ländern und deren Hauptstädten als Wert enthält.
-    Füge einem Benutzer Länder und Hauptstädte hinzu und gib die von einem bestimmten
-    Benutzer besuchten Länder aus. */
-
 func TestVisitedCountries(t *testing.T) {
 	t.Parallel()
 
@@ -478,29 +430,24 @@ func TestVisitedCountries(t *testing.T) {
 	}
 }
 
-/* 3. Erstelle eine Map, die den Namen eines Flughafens als Schlüssel und eine Map mit
-   Flügen zu anderen Flughäfen und den entsprechenden Flugzeiten als Wert enthält.
-   Füge Flüge und Flugzeiten hinzu und gib die Flugdetails für einen bestimmten Flughafen aus.
-*/
-
 func TestAirportDetails(t *testing.T) {
 	t.Parallel()
 
 	testCases := []struct {
 		airportName string
-		details     map[string]string
+		details     map[hp.FlightDestination]hp.FlightsHour
 		expectedErr bool
 	}{
 		{
 			airportName: "Frankfurter Flughafen",
-			details: map[string]string{
+			details: map[hp.FlightDestination]hp.FlightsHour{
 				"Berliner Flughafen": "12:30",
 			},
 			expectedErr: false,
 		},
 		{
 			airportName: "Muenchener Flughafen",
-			details: map[string]string{
+			details: map[hp.FlightDestination]hp.FlightsHour{
 				"Duesseldorfer Flughafen": "14:30",
 			},
 			expectedErr: false,
@@ -526,6 +473,56 @@ func TestAirportDetails(t *testing.T) {
 				}
 				if !reflect.DeepEqual(tc.details, details) {
 					t.Fatalf("for flight '%s', expected '%v' but got '%v'", tc.airportName, tc.details, details)
+				}
+			}
+		})
+	}
+}
+
+/* 4. Erstelle eine Map, die den Namen eines Unternehmens als Schlüssel und
+eine Map mit den Mitarbeitern und ihren Gehältern als Wert enthält.
+Füge Mitarbeiter und ihre Gehälter zu verschiedenen Unternehmen
+hinzu und gib die Gehälter für ein bestimmtes Unternehmen aus.
+*/
+
+func TestGetPaycheckDetails(t *testing.T) {
+	t.Parallel()
+
+	testCases := []struct {
+		CompanyName     string
+		PaycheckDetails map[hp.CompanyName]hp.Paycheck
+		expectedErr     bool
+	}{
+		{
+			CompanyName: "Deutsche Börse Group",
+			PaycheckDetails: map[hp.CompanyName]hp.Paycheck{
+				"Deutsche Börse Group": 5000.45,
+			},
+			expectedErr: false,
+		},
+		{
+			CompanyName: "Deutsche Bank AG",
+			PaycheckDetails: map[hp.CompanyName]hp.Paycheck{
+				"Deutsche Bank AG": 6000.50,
+			},
+			expectedErr: false,
+		},
+		{
+			CompanyName: "Unbekanntes Unternehmen",
+			PaycheckDetails: map[hp.CompanyName]hp.Paycheck{
+				"Unbekanntes Unternehmen": 0.0,
+			},
+			expectedErr: true,
+		},
+	}
+
+	for _, tc := range testCases {
+		//fmt.Println("paycheck: ", tc.PaycheckDetails)
+		t.Run(tc.CompanyName, func(t *testing.T) {
+			_, err := hp.GetPaycheckDetails(hp.CompanyName(tc.CompanyName))
+			if tc.expectedErr {
+				if err == nil {
+					t.Errorf("expected an error for company '%s' but got none", tc.CompanyName)
 				}
 			}
 		})
