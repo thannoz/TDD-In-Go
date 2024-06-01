@@ -524,11 +524,24 @@ func TestGetPaycheckDetails(t *testing.T) {
 	}
 
 	for _, tc := range testCases {
+
+		var expectedChecks []hp.Paycheck
+		for _, expectedChecksDetails := range tc.PaycheckDetails {
+			expectedChecks = append(expectedChecks, expectedChecksDetails)
+		}
+
 		t.Run(tc.CompanyName, func(t *testing.T) {
-			_, err := hp.GetPaycheckDetails(hp.CompanyName(tc.CompanyName))
+			paychecks, err := hp.GetPaycheckDetails(hp.CompanyName(tc.CompanyName))
 			if tc.expectedErr {
 				if err == nil {
 					t.Errorf("expected an error for company '%s' but got none", tc.CompanyName)
+				}
+			} else {
+				if err != nil {
+					t.Errorf("did not expect an error for company '%s' but got %v", tc.CompanyName, err)
+				}
+				if !reflect.DeepEqual(expectedChecks, paychecks) {
+					t.Errorf("for company '%s' expected %v but got %v", tc.CompanyName, expectedChecks, paychecks)
 				}
 			}
 		})

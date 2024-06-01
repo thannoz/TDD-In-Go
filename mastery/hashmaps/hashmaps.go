@@ -7,8 +7,7 @@ import (
 
 type Country string
 
-// 1. Erstelle eine Map, die den Namen eines Landes als Schlüssel und seine Hauptstadt als Wert enthält.
-// Gib die Hauptstadt für das Land "Deutschland" aus.
+/* Easy 1 */
 
 // GetCountry returns the capital of a country
 func GetCapital(c Country) string {
@@ -24,9 +23,7 @@ func GetCapital(c Country) string {
 	return countries[c]
 }
 
-// 2. Erstelle eine Map, die den Namen eines Produkts als Schlüssel und seinen Preis als Wert enthält.
-//Füge drei Produkte hinzu und gib den Preis für das Produkt mit dem Namen "Apfel" aus.
-
+/* Easy 2 */
 type Product string
 
 var Products = map[Product]float64{
@@ -40,8 +37,8 @@ func GetProductPrice(p Product) float64 {
 	return Products[p]
 }
 
-// 3. Erstelle eine Map, die den Namen einer Frucht als Schlüssel und ihre Farbe als Wert enthält.
-// Entferne die Frucht "Banane" aus der Map.
+/* Easy 3 */
+
 type Fruit string
 
 var Fruits = map[Fruit]string{
@@ -57,9 +54,8 @@ func DeleteFruitFromMap(f Fruit, fruits *map[Fruit]string) *map[Fruit]string {
 	return fruits
 }
 
-// 4. Erstelle eine Map, die den Namen eines Monats als Schlüssel und
-// die Anzahl der Tage in diesem
-// Monat als Wert enthält. Gib die Anzahl der Tage im Monat "Februar" aus.
+/* Easy 4 */
+
 type Month string
 
 var Months = map[Month]int{
@@ -77,9 +73,7 @@ var Months = map[Month]int{
 	Month("Dezember"):  31,
 }
 
-// 5. Erstelle eine Map, die den Namen eines Tieres als Schlüssel und seine durchschnittliche
-// Lebensdauer als Wert enthält. Füge einige Tiere und ihre durchschnittliche Lebensdauer
-// hinzu und gib die durchschnittliche Lebensdauer eines bestimmten Tieres aus.
+/* Easy 5 */
 
 func GetDaysOfTheMonth(m Month) int {
 	return Months[m]
@@ -98,11 +92,7 @@ func AddAverageLifeSpanOfAnimal(animal Animal, lifeSpan string) (map[Animal]stri
 	return Animals, nil
 }
 
-// Intermediate:
-
-// 1. Erstelle eine Map, die den Namen eines Benutzers als Schlüssel
-// und seine E-Mail-Adresse als Wert enthält.
-// Überprüfe, ob ein Benutzer mit dem Namen "Konzo" in der Map vorhanden ist.
+/* Intermediate 1 */
 
 var AdressBook = map[string]string{
 	"Carlos":  "carlos.mwuana@hotmail.de",
@@ -116,9 +106,7 @@ func Contains(name string) bool {
 	return ok
 }
 
-// 2. Erstelle eine Map, die den Namen eines Studenten als Schlüssel und eine Liste
-// seiner Fächer als Wert enthält. Füge einem Studenten "Max" das Fach "Mathematik"
-// hinzu und gib seine Fächer aus.
+/* Intermediate 2 */
 
 var ClassRoom = map[string][]string{}
 
@@ -132,9 +120,7 @@ func AddStudentAndSubject(student string, subjects ...string) map[string][]strin
 	return ClassRoom
 }
 
-// 3. Erstelle eine Map, die den Namen eines Landes als Schlüssel und eine Map
-//     mit seinen Nachbarländern als Wert enthält. Füge jedem Land einige Nachbarländer
-//     hinzu und gib die Nachbarländer von "Deutschland" aus.
+/* Intermediate 3 */
 
 var NeighbouringCountries = map[string]map[string]bool{
 	"Deutschland": {
@@ -159,7 +145,6 @@ var NeighbouringCountries = map[string]map[string]bool{
 	},
 }
 
-// PrintNeighbouringCountries returns neighboring countries of a given country
 func PrintNeighbouringCountries(country string) ([]string, error) {
 	var result []string
 	if neighbours, exists := NeighbouringCountries[country]; exists {
@@ -171,11 +156,8 @@ func PrintNeighbouringCountries(country string) ([]string, error) {
 	return nil, errors.New("country not found")
 }
 
-/*
- 4. Erstelle eine Map, die den Namen eines Buches als Schlüssel und den Namen des
-    Autors als Wert enthält. Füge einige Bücher und ihre Autoren hinzu und gib den
-    Autor eines bestimmten Buches aus.
-*/
+/* Intermediate 4 */
+
 type Book string
 
 var booksAuthors = map[Book]string{
@@ -193,10 +175,7 @@ func PrintAuthorsName(book Book) (string, error) {
 	return "", fmt.Errorf("author for '%s' not found", book)
 }
 
-/*
-5. Erstelle eine Map, die den Namen eines Kurses als Schlüssel und die Liste der Schüler,
-    die diesen Kurs besuchen, als Wert enthält. Füge Schüler zu verschiedenen Kursen hinzu
-    und gib die Liste der Schüler für einen bestimmten Kurs aus. */
+/* Intermediate 5 */
 
 var studentCourses = map[string][]string{
 	"Mathematik": {"Carlos", "Konzo", "Mwinda"},
@@ -213,12 +192,8 @@ func PrintStudentList(courseName string) ([]string, error) {
 	return studentList, nil
 }
 
-/*
- 1. Erstelle eine Map, die den Namen eines Restaurants als Schlüssel und eine Map
+/* Advanced 1 */
 
-mit den verfügbaren Gerichten und ihren Preisen als Wert enthält. Füge Gerichte
-und Preise zu verschiedenen Restaurants hinzu und gib die Speisekarte eines bestimmten Restaurants aus.
-*/
 type RestaurantName string
 
 var restaurantMenu = map[RestaurantName]map[string]float32{
@@ -249,12 +224,7 @@ func PrintRestaurantMenu(restaurantName RestaurantName) (map[string]float32, err
 	return restaurant, nil
 }
 
-/*
- 2. Erstelle eine Map, die den Namen eines Benutzers als Schlüssel und eine
-    Map mit den von ihm besuchten Ländern und deren Hauptstädten als Wert enthält.
-    Füge einem Benutzer Länder und Hauptstädte hinzu und gib die von einem bestimmten
-    Benutzer besuchten Länder aus.
-*/
+/* Advanced 2 */
 type VisitedCountry struct {
 	Name    string
 	Capital string
@@ -282,6 +252,8 @@ func VisitedCountries(username string) ([]VisitedCountry, error) {
 	return user.Countries, nil
 }
 
+/* Advanced 3 */
+
 type (
 	AirportName       string
 	FlightDestination string
@@ -306,6 +278,8 @@ func AirportDetails(name AirportName) (map[FlightDestination]FlightsHour, error)
 	return flightDetails, nil
 }
 
+/* Advanced 4 */
+
 type (
 	CompanyName  string
 	EmployeeName string
@@ -324,15 +298,15 @@ var companyDetails = map[CompanyName]map[EmployeeName]Paycheck{
 	},
 }
 
-func GetPaycheckDetails(cp CompanyName) ([]float64, error) {
+func GetPaycheckDetails(cp CompanyName) ([]Paycheck, error) {
 	salaryDetails, exists := companyDetails[cp]
 	if !exists {
 		return nil, fmt.Errorf("salary details for '%s' not found", cp)
 	}
 
-	var paycheckAmounts []float64
+	var paycheckAmounts []Paycheck
 	for _, salary := range salaryDetails {
-		paycheckAmounts = append(paycheckAmounts, float64(salary))
+		paycheckAmounts = append(paycheckAmounts, salary)
 	}
 
 	return paycheckAmounts, nil
