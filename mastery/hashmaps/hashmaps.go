@@ -7,9 +7,6 @@ import (
 
 type Country string
 
-/* Easy 1 */
-
-// GetCountry returns the capital of a country
 func GetCapital(c Country) string {
 	countries := map[Country]string{
 		"Deutschland": "Berlin",
@@ -23,7 +20,6 @@ func GetCapital(c Country) string {
 	return countries[c]
 }
 
-/* Easy 2 */
 type Product string
 
 var Products = map[Product]float64{
@@ -36,8 +32,6 @@ var Products = map[Product]float64{
 func GetProductPrice(p Product) float64 {
 	return Products[p]
 }
-
-/* Easy 3 */
 
 type Fruit string
 
@@ -53,8 +47,6 @@ func DeleteFruitFromMap(f Fruit, fruits *map[Fruit]string) *map[Fruit]string {
 	delete(*fruits, f)
 	return fruits
 }
-
-/* Easy 4 */
 
 type Month string
 
@@ -73,8 +65,6 @@ var Months = map[Month]int{
 	Month("Dezember"):  31,
 }
 
-/* Easy 5 */
-
 func GetDaysOfTheMonth(m Month) int {
 	return Months[m]
 }
@@ -92,8 +82,6 @@ func AddAverageLifeSpanOfAnimal(animal Animal, lifeSpan string) (map[Animal]stri
 	return Animals, nil
 }
 
-/* Intermediate 1 */
-
 var AdressBook = map[string]string{
 	"Carlos":  "carlos.mwuana@hotmail.de",
 	"Carmelo": "carmelo.mwinda@hotmail.de",
@@ -106,11 +94,8 @@ func Contains(name string) bool {
 	return ok
 }
 
-/* Intermediate 2 */
-
 var ClassRoom = map[string][]string{}
 
-// AddStudentAndSubject assigns one or multiple subjects to a student
 func AddStudentAndSubject(student string, subjects ...string) map[string][]string {
 	if _, ok := ClassRoom[student]; !ok {
 		ClassRoom[student] = []string{}
@@ -119,8 +104,6 @@ func AddStudentAndSubject(student string, subjects ...string) map[string][]strin
 	ClassRoom[student] = append(ClassRoom[student], subjects...)
 	return ClassRoom
 }
-
-/* Intermediate 3 */
 
 var NeighbouringCountries = map[string]map[string]bool{
 	"Deutschland": {
@@ -156,8 +139,6 @@ func PrintNeighbouringCountries(country string) ([]string, error) {
 	return nil, errors.New("country not found")
 }
 
-/* Intermediate 4 */
-
 type Book string
 
 var booksAuthors = map[Book]string{
@@ -175,8 +156,6 @@ func PrintAuthorsName(book Book) (string, error) {
 	return "", fmt.Errorf("author for '%s' not found", book)
 }
 
-/* Intermediate 5 */
-
 var studentCourses = map[string][]string{
 	"Mathematik": {"Carlos", "Konzo", "Mwinda"},
 	"Physik":     {"Kalonji", "Selamawit"},
@@ -191,8 +170,6 @@ func PrintStudentList(courseName string) ([]string, error) {
 
 	return studentList, nil
 }
-
-/* Advanced 1 */
 
 type RestaurantName string
 
@@ -224,7 +201,6 @@ func PrintRestaurantMenu(restaurantName RestaurantName) (map[string]float32, err
 	return restaurant, nil
 }
 
-/* Advanced 2 */
 type VisitedCountry struct {
 	Name    string
 	Capital string
@@ -252,8 +228,6 @@ func VisitedCountries(username string) ([]VisitedCountry, error) {
 	return user.Countries, nil
 }
 
-/* Advanced 3 */
-
 type (
 	AirportName       string
 	FlightDestination string
@@ -277,8 +251,6 @@ func AirportDetails(name AirportName) (map[FlightDestination]FlightsHour, error)
 
 	return flightDetails, nil
 }
-
-/* Advanced 4 */
 
 type (
 	CompanyName  string
