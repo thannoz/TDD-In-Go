@@ -1,1 +1,5 @@
 package arrayslices
+
+func initializeArray() [5]int {
+	return [5]int{1, 2, 3, 4, 5}
+}
