@@ -1,7 +1,6 @@
-package main
+package hashmaps
 
 import (
-	hp "mastery/hashmaps"
 	"reflect"
 	"testing"
 )
@@ -11,7 +10,7 @@ func TestGetCapitals(t *testing.T) {
 
 	// Tabelle tests
 	testCases := []struct {
-		country hp.Country
+		country Country
 		want    string
 	}{
 		{country: "Kongo DR", want: "Kinshasa"},
@@ -25,7 +24,7 @@ func TestGetCapitals(t *testing.T) {
 
 	for _, tc := range testCases {
 		t.Run(string(tc.country), func(t *testing.T) {
-			got := hp.GetCapital(tc.country)
+			got := GetCapital(tc.country)
 			if got != tc.want {
 				t.Errorf("GetCapital(%q) = %q; want %q", tc.country, got, tc.want)
 			}
@@ -37,7 +36,7 @@ func TestGetProductPrice(t *testing.T) {
 	t.Parallel()
 
 	testCases := []struct {
-		product hp.Product
+		product Product
 		want    float64
 	}{
 		{product: "Banane", want: 2.34},
@@ -49,7 +48,7 @@ func TestGetProductPrice(t *testing.T) {
 
 	for _, tc := range testCases {
 		t.Run(string(tc.product), func(t *testing.T) {
-			got := hp.GetProductPrice(tc.product)
+			got := GetProductPrice(tc.product)
 			if got != tc.want {
 				t.Errorf("got %0.2f, want %0.2f", got, tc.want)
 			}
@@ -61,7 +60,7 @@ func TestGetCapitalVersionTwo(t *testing.T) {
 	t.Parallel()
 
 	t.Run("This is an alternative version of the Test above", func(t *testing.T) {
-		got := hp.GetCapital("France")
+		got := GetCapital("France")
 		want := "Paris"
 		if got != want {
 			t.Errorf("Capital of %q, is not %q", got, want)
@@ -72,10 +71,10 @@ func TestGetCapitalVersionTwo(t *testing.T) {
 func TestDeleteFruitFromMap(t *testing.T) {
 	t.Parallel()
 
-	fruitToDelete := hp.Fruit("Banane")
-	hp.DeleteFruitFromMap(fruitToDelete, &hp.Fruits)
+	fruitToDelete := Fruit("Banane")
+	DeleteFruitFromMap(fruitToDelete, &Fruits)
 
-	_, ok := hp.Fruits[fruitToDelete]
+	_, ok := Fruits[fruitToDelete]
 	if ok {
 		t.Errorf("%v wurde nicht gelöscht.", fruitToDelete)
 	}
@@ -85,26 +84,26 @@ func TestGetDaysOfTheMonth(t *testing.T) {
 	t.Parallel()
 
 	testCases := []struct {
-		month hp.Month
+		month Month
 		want  int
 	}{
-		{month: hp.Month("Januar"), want: 31},
-		{month: hp.Month("Februar"), want: 28},
-		{month: hp.Month("März"), want: 30},
-		{month: hp.Month("April"), want: 31},
-		{month: hp.Month("Mai"), want: 31},
-		{month: hp.Month("Juni"), want: 30},
-		{month: hp.Month("Juli"), want: 31},
-		{month: hp.Month("August"), want: 31},
-		{month: hp.Month("September"), want: 30},
-		{month: hp.Month("Oktober"), want: 31},
-		{month: hp.Month("November"), want: 30},
-		{month: hp.Month("Dezember"), want: 31},
+		{month: Month("Januar"), want: 31},
+		{month: Month("Februar"), want: 28},
+		{month: Month("März"), want: 30},
+		{month: Month("April"), want: 31},
+		{month: Month("Mai"), want: 31},
+		{month: Month("Juni"), want: 30},
+		{month: Month("Juli"), want: 31},
+		{month: Month("August"), want: 31},
+		{month: Month("September"), want: 30},
+		{month: Month("Oktober"), want: 31},
+		{month: Month("November"), want: 30},
+		{month: Month("Dezember"), want: 31},
 	}
 
 	for _, tc := range testCases {
 		t.Run(string(tc.month), func(t *testing.T) {
-			got := hp.GetDaysOfTheMonth(tc.month)
+			got := GetDaysOfTheMonth(tc.month)
 			if got != tc.want {
 				t.Errorf("got %v, want %v", got, tc.want)
 			}
@@ -115,24 +114,24 @@ func TestGetDaysOfTheMonth(t *testing.T) {
 func TestAddAnimalLifeSpan(t *testing.T) {
 	t.Parallel()
 
-	tiere := map[hp.Animal]string{
-		hp.Animal("Hund"):  "12-16 Jahre",
-		hp.Animal("Katze"): "12-30 Jahre",
-		hp.Animal("Maus"):  "1-6 Jahre",
+	tiere := map[Animal]string{
+		Animal("Hund"):  "12-16 Jahre",
+		Animal("Katze"): "12-30 Jahre",
+		Animal("Maus"):  "1-6 Jahre",
 	}
 
 	testCases := []struct {
-		animal   hp.Animal
+		animal   Animal
 		lifeSpan string
 	}{
-		{animal: hp.Animal("Hund"), lifeSpan: "12-16 Jahre"},
-		{animal: hp.Animal("Katze"), lifeSpan: "12-30 Jahre"},
-		{animal: hp.Animal("Rate"), lifeSpan: "12-30 Jahre"},
+		{animal: Animal("Hund"), lifeSpan: "12-16 Jahre"},
+		{animal: Animal("Katze"), lifeSpan: "12-30 Jahre"},
+		{animal: Animal("Rate"), lifeSpan: "12-30 Jahre"},
 	}
 
 	for _, tc := range testCases {
 		t.Run(string(tc.animal), func(t *testing.T) {
-			got, err := hp.AddAverageLifeSpanOfAnimal(tc.animal, tc.lifeSpan)
+			got, err := AddAverageLifeSpanOfAnimal(tc.animal, tc.lifeSpan)
 			if err != nil {
 				t.Fatalf("Fehler erwartet: %v, aber kein Fehler aufgetreten", err)
 			}
@@ -159,7 +158,7 @@ func TestContainInAdressBook(t *testing.T) {
 
 	for _, name := range names {
 		t.Run(name, func(t *testing.T) {
-			found := hp.Contains(name)
+			found := Contains(name)
 			if !found {
 				t.Logf("Benutzer '%s' nicht im Adressbuch gefunden", name)
 			}
@@ -217,7 +216,7 @@ func TestNeighboringCountries(t *testing.T) {
 
 	for _, tc := range testCases {
 		t.Run(tc.country, func(t *testing.T) {
-			neibours, err := hp.PrintNeighbouringCountries(tc.country)
+			neibours, err := PrintNeighbouringCountries(tc.country)
 			if tc.expectingErr {
 				if err == nil {
 					t.Fatalf("expected an error for country %s, but got none", tc.country)
@@ -248,7 +247,7 @@ func TestPrintAuthorsNames(t *testing.T) {
 	t.Parallel()
 
 	testCases := []struct {
-		bookName    hp.Book
+		bookName    Book
 		expected    string
 		expectedErr bool
 	}{
@@ -258,7 +257,7 @@ func TestPrintAuthorsNames(t *testing.T) {
 	}
 
 	for _, tc := range testCases {
-		author, err := hp.PrintAuthorsName(tc.bookName)
+		author, err := PrintAuthorsName(tc.bookName)
 		if tc.expectedErr { // should fail because no such book, hence true in expected struct
 			if err == nil { // because theres no such book, there will be no author.
 				// Hence we expect an error
@@ -292,7 +291,7 @@ func TestPrintStudentCourses(t *testing.T) {
 	for _, tc := range testCases {
 		t.Run(tc.courseName, func(t *testing.T) {
 			t.Parallel()
-			students, err := hp.PrintStudentList(tc.courseName)
+			students, err := PrintStudentList(tc.courseName)
 			if tc.expectedErr { // we are expecting this case to fail
 				if err == nil { // function 'PrintStudentCourses' should return error but didn't return any
 					t.Fatalf("expected an error for student '%s', but got none", tc.courseName)
@@ -318,7 +317,7 @@ func TestPrintRestaurantMenu(t *testing.T) {
 	t.Parallel()
 
 	testCases := []struct {
-		restaurantName hp.RestaurantName
+		restaurantName RestaurantName
 		menu           map[string]float32
 		expectedErr    bool
 	}{
@@ -368,7 +367,7 @@ func TestPrintRestaurantMenu(t *testing.T) {
 		t.Run(string(tc.restaurantName), func(t *testing.T) {
 			t.Parallel()
 
-			restaurantMenu, err := hp.PrintRestaurantMenu(tc.restaurantName)
+			restaurantMenu, err := PrintRestaurantMenu(tc.restaurantName)
 			if tc.expectedErr {
 				if err == nil {
 					t.Fatalf("expected an error for restaurant '%v', but got none", tc.restaurantName)
@@ -392,12 +391,12 @@ func TestVisitedCountries(t *testing.T) {
 
 	testCases := []struct {
 		username    string
-		user        []hp.VisitedCountry
+		user        []VisitedCountry
 		expectedErr bool
 	}{
 		{
 			username: "Nzolani",
-			user: []hp.VisitedCountry{
+			user: []VisitedCountry{
 				{Name: "Germany", Capital: "Berlin"},
 				{Name: "USA", Capital: "Washington DC"}},
 			expectedErr: false,
@@ -413,7 +412,7 @@ func TestVisitedCountries(t *testing.T) {
 		t.Run(tc.username, func(t *testing.T) {
 			t.Parallel()
 
-			countries, err := hp.VisitedCountries(tc.username)
+			countries, err := VisitedCountries(tc.username)
 			if tc.expectedErr {
 				if err == nil {
 					t.Fatalf("expected an error for username '%s', but got got none", tc.username)
@@ -435,19 +434,19 @@ func TestAirportDetails(t *testing.T) {
 
 	testCases := []struct {
 		airportName string
-		details     map[hp.FlightDestination]hp.FlightsHour
+		details     map[FlightDestination]FlightsHour
 		expectedErr bool
 	}{
 		{
 			airportName: "Frankfurter Flughafen",
-			details: map[hp.FlightDestination]hp.FlightsHour{
+			details: map[FlightDestination]FlightsHour{
 				"Berliner Flughafen": "12:30",
 			},
 			expectedErr: false,
 		},
 		{
 			airportName: "Muenchener Flughafen",
-			details: map[hp.FlightDestination]hp.FlightsHour{
+			details: map[FlightDestination]FlightsHour{
 				"Duesseldorfer Flughafen": "14:30",
 			},
 			expectedErr: false,
@@ -462,7 +461,7 @@ func TestAirportDetails(t *testing.T) {
 	for _, tc := range testCases {
 		t.Run(tc.airportName, func(t *testing.T) {
 			t.Parallel()
-			details, err := hp.AirportDetails(hp.AirportName((tc.airportName)))
+			details, err := AirportDetails(AirportName((tc.airportName)))
 			if tc.expectedErr {
 				if err == nil {
 					t.Errorf("expected error for flight '%s' but got none", tc.airportName)
@@ -479,44 +478,38 @@ func TestAirportDetails(t *testing.T) {
 	}
 }
 
-/* 4. Erstelle eine Map, die den Namen eines Unternehmens als Schlüssel und
-eine Map mit den Mitarbeitern und ihren Gehältern als Wert enthält.
-Füge Mitarbeiter und ihre Gehälter zu verschiedenen Unternehmen
-hinzu und gib die Gehälter für ein bestimmtes Unternehmen aus.
-*/
-
 func TestGetPaycheckDetails(t *testing.T) {
 	t.Parallel()
 
 	testCases := []struct {
 		CompanyName     string
-		PaycheckDetails map[hp.CompanyName]hp.Paycheck
+		PaycheckDetails map[CompanyName]Paycheck
 		expectedErr     bool
 	}{
 		{
 			CompanyName: "Deutsche Börse Group",
-			PaycheckDetails: map[hp.CompanyName]hp.Paycheck{
+			PaycheckDetails: map[CompanyName]Paycheck{
 				"John Doe": 5000.45,
 			},
 			expectedErr: false,
 		},
 		{
 			CompanyName: "Deutsche Bank AG",
-			PaycheckDetails: map[hp.CompanyName]hp.Paycheck{
+			PaycheckDetails: map[CompanyName]Paycheck{
 				"Jane Doe": 6000.50,
 			},
 			expectedErr: false,
 		},
 		{
 			CompanyName: "Porsche AG",
-			PaycheckDetails: map[hp.CompanyName]hp.Paycheck{
+			PaycheckDetails: map[CompanyName]Paycheck{
 				"John Smith": 4500.55,
 			},
 			expectedErr: false,
 		},
 		{
 			CompanyName: "Unbekanntes Unternehmen",
-			PaycheckDetails: map[hp.CompanyName]hp.Paycheck{
+			PaycheckDetails: map[CompanyName]Paycheck{
 				"Unbekanntes Unternehmen": 0.0,
 			},
 			expectedErr: true,
@@ -525,13 +518,13 @@ func TestGetPaycheckDetails(t *testing.T) {
 
 	for _, tc := range testCases {
 
-		var expectedChecks []hp.Paycheck
+		var expectedChecks []Paycheck
 		for _, expectedChecksDetails := range tc.PaycheckDetails {
 			expectedChecks = append(expectedChecks, expectedChecksDetails)
 		}
 
 		t.Run(tc.CompanyName, func(t *testing.T) {
-			paychecks, err := hp.GetPaycheckDetails(hp.CompanyName(tc.CompanyName))
+			paychecks, err := GetPaycheckDetails(CompanyName(tc.CompanyName))
 			if tc.expectedErr {
 				if err == nil {
 					t.Errorf("expected an error for company '%s' but got none", tc.CompanyName)
@@ -549,7 +542,7 @@ func TestGetPaycheckDetails(t *testing.T) {
 }
 
 func BenchmarkGetDaysOfTheMonth(b *testing.B) {
-	months := []hp.Month{
+	months := []Month{
 		"Januar",
 		"Februar",
 		"März",
@@ -566,37 +559,37 @@ func BenchmarkGetDaysOfTheMonth(b *testing.B) {
 
 	for i := 0; i < b.N; i++ {
 		for _, month := range months {
-			_ = hp.GetDaysOfTheMonth(month)
+			_ = GetDaysOfTheMonth(month)
 		}
 	}
 }
 
 func BenchmarkGetCapital(b *testing.B) {
-	countries := []hp.Country{"Kongo DR", "Deutschland", "Angola", "Kenia", "Senegal", "France"}
+	countries := []Country{"Kongo DR", "Deutschland", "Angola", "Kenia", "Senegal", "France"}
 
 	for i := 0; i < b.N; i++ {
 		for _, country := range countries {
-			_ = hp.GetCapital(country)
+			_ = GetCapital(country)
 		}
 	}
 }
 
 func BenchmarkGetProductPrice(b *testing.B) {
-	products := []hp.Product{"Banane, Apfel, Birne, Pfirsisch, Kiwi"}
+	products := []Product{"Banane, Apfel, Birne, Pfirsisch, Kiwi"}
 
 	for i := 0; i < b.N; i++ {
 		for _, product := range products {
-			_ = hp.GetProductPrice(product)
+			_ = GetProductPrice(product)
 		}
 	}
 }
 
 func BenchmarkDeleteFruitFromMap(b *testing.B) {
-	fruits := []hp.Fruit{"Banane", "Himberre", "Birne", "Kiwi", "Apfel"}
+	fruits := []Fruit{"Banane", "Himberre", "Birne", "Kiwi", "Apfel"}
 
 	for i := 0; i < b.N; i++ {
 		for _, fruit := range fruits {
-			hp.DeleteFruitFromMap(fruit, &hp.Fruits)
+			DeleteFruitFromMap(fruit, &Fruits)
 		}
 	}
 }
@@ -606,7 +599,7 @@ func BenchmarkNeighbouringCountries(b *testing.B) {
 
 	for i := 0; i < b.N; i++ {
 		for _, country := range countries {
-			hp.PrintNeighbouringCountries(country)
+			PrintNeighbouringCountries(country)
 		}
 	}
 }
