@@ -1,8 +1,10 @@
 package concurrency
 
 import (
+	"fmt"
 	"io"
 	"os"
+	"strconv"
 	"strings"
 	"testing"
 )
@@ -53,6 +55,51 @@ func TestGreetingWithChannel(t *testing.T) {
 	for _, greeting := range expectedGreetings {
 		if !strings.Contains(output, greeting) {
 			t.Errorf("expected to find %s in output", greeting)
+		}
+	}
+}
+
+// TestCountingDigitsWithChannels is a test function that tests the CountingDigitsWithChannels function by capturing stdout,
+// executing CountingDigitsWithChannels on a list of numbers, and checking the output against expected digits.
+//
+// t: a testing.T object for running test functions.
+func TestCountingDigitsWithChannels(t *testing.T) {
+	exptectedNumbers := []int{1, 2, 3, 4, 5}
+
+	stdOut := os.Stdout
+	_, w, _ := os.Pipe()
+	os.Stdout = w
+
+	done := make(chan struct{})
+	digitStream := make(chan int)
+
+	go func() {
+		CountingDigitsWithChannels(digitStream, done)
+	}()
+
+	// Read the result from the digitStream channel & store them in
+	// a string builder
+	outputChan := make(chan string)
+	go func() {
+		var builder strings.Builder
+		for digit := range digitStream {
+			builder.WriteString(fmt.Sprintf("%d\n", digit))
+		}
+		outputChan <- builder.String()
+	}()
+
+	<-done
+
+	_ = w.Close()
+	// Restore stdout to avoid problems.
+	os.Stdout = stdOut
+
+	result := <-outputChan
+	output := strings.TrimSpace(result)
+
+	for _, expectedNumber := range exptectedNumbers {
+		if !strings.Contains(output, strconv.Itoa(expectedNumber)) {
+			t.Errorf("expected to find %d in output but got %s", expectedNumber, output)
 		}
 	}
 }
