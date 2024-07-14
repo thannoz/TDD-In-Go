@@ -42,9 +42,10 @@ func CountingDigitsWithChannels(digitStream chan int, done chan struct{}) {
 	close(done)        // Close the done channel to signal completion
 }
 
-func EnumerateAlphabet(ch chan string, done chan struct{}) {
-	for i := 'a'; i <= 'e'; i++ {
-		ch <- string(i)
+func PrintingAlphabetWichChannels(alphabetStream chan string, done chan struct{}) {
+	for i := 'a'; i <= 'f'; i++ {
+		alphabetStream <- string(i)
 	}
-	close(ch)
+	close(alphabetStream)
+	close(done)
 }

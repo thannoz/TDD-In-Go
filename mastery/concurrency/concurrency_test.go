@@ -103,3 +103,40 @@ func TestCountingDigitsWithChannels(t *testing.T) {
 		}
 	}
 }
+
+func TestPrintingLettersWithChannels(t *testing.T) {
+	letters := []string{"a", "b", "c", "d", "e", "f"}
+
+	stdOut := os.Stdout
+	r, w, _ := os.Pipe()
+	os.Stdout = w
+
+	done := make(chan struct{})
+	alphabetStream := make(chan string)
+
+	go func() {
+		PrintingAlphabetWichChannels(alphabetStream, done)
+	}()
+
+	go func() {
+		var alphabet string
+		for alphabet = range alphabetStream {
+			fmt.Printf("%s\n", alphabet)
+		}
+	}()
+
+	<-done
+	_ = w.Close()
+
+	os.Stdout = stdOut
+
+	result, _ := io.ReadAll(r)
+	output := string(result)
+
+	for _, letter := range letters {
+		if !strings.Contains(output, letter) {
+			t.Errorf("expected to find %s in output but got %s", letter, output)
+		}
+	}
+
+}
