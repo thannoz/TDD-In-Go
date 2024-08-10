@@ -6,16 +6,8 @@ import (
 )
 
 func main() {
-	alphabet := make(chan string)
 	done := make(chan struct{})
+	concurrency.SendeDataBetweenTwoUnbufferedChannels(done)
 
-	go concurrency.PrintingAlphabetWichChannels(alphabet, done)
-	go func() {
-		for x := range alphabet {
-			fmt.Printf("%s\n", x)
-		}
-		//close(done)
-	}()
-
-	<-done
+	fmt.Println("\nMain is done...")
 }

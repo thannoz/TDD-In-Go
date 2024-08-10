@@ -16,8 +16,8 @@ import (
 func TestGreetingWithChannel(t *testing.T) {
 	names := []string{"John", "Doe", "Jane", "Dean"}
 
-	// Capture what is being written to stdout
-	// use os.Pipe() to read and (write) from it.
+	// Capture what is being written to the standard-output
+	// and redirect it to pipe using os.Pipe().
 	stdOut := os.Stdout
 	r, w, _ := os.Pipe()
 	os.Stdout = w
@@ -38,11 +38,12 @@ func TestGreetingWithChannel(t *testing.T) {
 
 	<-done
 
+	// close the pipe
 	_ = w.Close()
 	result, _ := io.ReadAll(r)
 	output := string(result)
 
-	// Restore stdout to avoid problems.
+	// Restore standart-output to avoid problems.
 	os.Stdout = stdOut
 
 	expectedGreetings := []string{
@@ -59,8 +60,9 @@ func TestGreetingWithChannel(t *testing.T) {
 	}
 }
 
-// TestCountingDigitsWithChannels is a test function that tests the CountingDigitsWithChannels function by capturing stdout,
-// executing CountingDigitsWithChannels on a list of numbers, and checking the output against expected digits.
+// TestCountingDigitsWithChannels is a test function that tests the CountingDigitsWithChannels
+// function by capturing stdout, executing CountingDigitsWithChannels on a list of numbers,
+// and checking the output against expected digits.
 //
 // t: a testing.T object for running test functions.
 func TestCountingDigitsWithChannels(t *testing.T) {
@@ -105,7 +107,7 @@ func TestCountingDigitsWithChannels(t *testing.T) {
 }
 
 func TestPrintingLettersWithChannels(t *testing.T) {
-	letters := []string{"a", "b", "c", "d", "e", "f"}
+	letters := []string{"A", "B", "C", "D", "E", "F"}
 
 	stdOut := os.Stdout
 	r, w, _ := os.Pipe()
@@ -138,5 +140,4 @@ func TestPrintingLettersWithChannels(t *testing.T) {
 			t.Errorf("expected to find %s in output but got %s", letter, output)
 		}
 	}
-
 }

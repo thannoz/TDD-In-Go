@@ -43,9 +43,43 @@ func CountingDigitsWithChannels(digitStream chan int, done chan struct{}) {
 }
 
 func PrintingAlphabetWichChannels(alphabetStream chan string, done chan struct{}) {
-	for i := 'a'; i <= 'f'; i++ {
+	for i := 'A'; i <= 'F'; i++ {
 		alphabetStream <- string(i)
 	}
 	close(alphabetStream)
 	close(done)
+}
+
+func PrintDigitInBufferedChannel(digitStream chan int, done chan struct{}) {
+	for i := 1; i <= 15; i++ {
+		digitStream <- i
+	}
+	close(digitStream)
+	close(done)
+}
+
+func sender(names []string, nameStream chan string) {
+
+	for _, name := range names {
+		nameStream <- name
+	}
+	close(nameStream)
+}
+
+func receiver(nameStream chan string, done chan struct{}) {
+
+	for name := range nameStream {
+		fmt.Printf("received from sender: %s\n", name)
+	}
+	done <- struct{}{}
+}
+
+func SendeDataBetweenTwoUnbufferedChannels(done chan struct{}) {
+	dataStream := make(chan string, 3)
+	data := []string{"Carlos", "Kalonji", "Nzolani", "Konzo"}
+
+	go sender(data, dataStream)
+	go receiver(dataStream, done)
+
+	<-done
 }
